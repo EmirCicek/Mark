@@ -1,0 +1,162 @@
+beyaz-ekran-html-start
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>BEYAZ EKRAN</h1>
+</body>
+</html>
+beyaz-ekran-html-end
+
+hava-durumu-html-start
+
+ <!DOCTYPE html>
+ <html lang="tr">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Hava Durumu</title>
+     <style>
+         * {
+             /* Reset */
+             margin: 0;
+             padding: 0;
+             box-sizing: border-box;
+         }
+ 
+         body {
+             font-family: "montserrat", sans-serif;
+             color: #fff;
+             background-image: url("img/city.png");
+             background-position: center;
+             background-repeat: no-repeat;
+             background-size: cover;
+             height: 100vh;
+         }
+ 
+         .app {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             text-align: center;
+             background-color: rgba(0, 0, 0, 0.4);
+             height: 100vh;
+         }
+ 
+         .header h1 {
+             margin-top: 100px;
+             margin-bottom: 15px;
+             color: orange;
+             font-size: 50px;
+         }
+ 
+         .header input {
+             width: 100%;
+             background: transparent;
+             border: 0;
+             outline: 0;
+             text-align: center;
+             border-bottom: 2px solid orange;
+             font-size: 22px;
+             color: #fff;
+         }
+ 
+         .city {
+             margin-top: 30px;
+             font-size: 35px;
+         }
+ 
+         .temp {
+             font-size: 70px;
+             margin-top: 20px;
+         }
+ 
+         .image img {
+             width: 100%; /* Resmin genişliğini ayarla */
+             height: auto; /* Oranları koru */
+         }
+ 
+         .description {
+             font-size: 27px;
+         }
+ 
+         .min_max {
+             margin-top: 10px;
+             font-size: 19px;
+         }
+     </style>
+ </head>
+ <body>
+     <div class="app">
+         <div class="header">
+             <h1>Hava Durumu</h1>
+         </div>
+         <div class="contant">
+             <div class="city"></div>
+             <div class="temp"></div>
+             <div class="image">
+                 <!-- Burada resmi göstermek için bir img etiketi eklenmiştir -->
+                 <img src="" alt="Hava Durumu Görseli">
+             </div>
+             <div class="description"></div>
+             <div class="min_max"></div>
+         </div>
+     </div>
+ 
+     <script src="script.js"></script>
+ </body>
+ </html>
+ 
+
+hava-durumu-html-end
+
+hava-durumu-js-start
+
+
+
+// script.js
+
+const url = "https://api.openweathermap.org/data/2.5/weather";
+const apiKey = "2ab92ea8f83687950a43795cb8d5f2c0";
+
+const getResults = () => {
+    let query = `${url}?q=Izmir&appid=${apiKey}&units=metric&lang=tr`;
+    fetch(query)
+        .then(weather => weather.json())
+        .then(displayResults);
+}
+
+const displayResults = (response) => {
+    let city = response.name;
+    let temp = Math.round(response.main.temp);
+    let desc = response.weather[0].description;
+    let capitalizedDesc = desc.charAt(0).toUpperCase() + desc.slice(1);
+    let icon = response.weather[0].icon;
+    let image = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+    let country = response.sys.country;
+    let min = Math.round(response.main.temp_min);
+    let max = Math.round(response.main.temp_max);
+    document.querySelector(".image").style.display = "block";
+
+    let cityElements = document.getElementsByClassName("city");
+    let tempElements = document.getElementsByClassName("temp");
+    let descElements = document.getElementsByClassName("description");
+    let imageElements = document.getElementsByClassName("image");
+    let minMaxElements = document.getElementsByClassName("min_max");
+
+    for (let i = 0; i < cityElements.length; i++) {
+        cityElements[i].innerText = city + ", " + country;
+        tempElements[i].innerText = temp;
+        descElements[i].innerText = capitalizedDesc;
+        imageElements[i].children[0].src = image; 
+        minMaxElements[i].innerText = min + "°C / " + max + "°C";
+    }
+}
+
+window.addEventListener("load", getResults);
+
+hava-durumu-js-end
