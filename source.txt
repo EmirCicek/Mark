@@ -160,3 +160,88 @@ const displayResults = (response) => {
 window.addEventListener("load", getResults);
 
 hava-durumu-js-end
+
+saat-html-start
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: black;
+            color: white;
+        }
+        .saat_yeri{
+            font-size: 200px;
+            display: flex;
+            justify-content: center;
+            margin-top: 20%;
+        }
+        .tarih_yeri{
+            font-size: 60px;
+            display: flex;
+            justify-content: center;
+        }
+        .tarih_yeri #gun{
+            margin-right: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="saat_yeri">
+        <div id="saat" ></div>
+    </div>
+
+    <div class="tarih_yeri">
+        <div id="gun"></div>  <div id="tarih"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+saat-html-end
+
+saat-js-start
+
+const saat = document.getElementById('saat');
+const gun = document.getElementById('gun');
+const tarih = document.getElementById('tarih');
+
+function saatTarihGunu() {
+    let simdikiZaman = new Date();
+    let saat = simdikiZaman.toLocaleTimeString();
+    let gun = simdikiZaman.getDate();
+    let ay = simdikiZaman.getMonth() + 1;
+    let yil = simdikiZaman.getFullYear();
+    let tarih = gun + '-' + ay + '-' + yil;
+    let gunler = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+    let gunAdi = gunler[simdikiZaman.getDay()];
+    let sonuc = {
+        saat: saat,
+        tarih: tarih,
+        gun: gunAdi
+    };
+
+    return sonuc; 
+}
+
+function saat_ayarla (){
+    let result = saatTarihGunu();
+    let s_tarih = String(result.tarih).replaceAll('-', '.')
+    let s_gun = String(result.gun)
+    gun.innerText = s_gun;
+    saat.innerText = result.saat;
+    tarih.innerText = s_tarih;
+}
+
+
+saat_ayarla();
+
+setInterval(saat_ayarla, 1000);
+
+saat-js-end
